@@ -1,4 +1,6 @@
 #include <thread>
+
+#if WINDOWS
 #include <windows.h>
 #include "RSZStructConstructor.hpp"
 
@@ -14,3 +16,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  reason, LPVOID lpReserved)
 	}
 	return TRUE;
 }
+
+#else
+
+#include "RSZStructConstructor.hpp"
+
+__attribute__((constructor))
+int	main()
+{
+	return 0;
+}
+#endif

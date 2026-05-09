@@ -5,7 +5,11 @@
 #include <chrono>
 #include <nlohmann/json.hpp>
 
+#if WINDOWS
 #define DECL_EXPORT extern "C" __declspec(dllexport)
+#else
+#define DECL_EXPORT extern "C"
+#endif
 
 using json = nlohmann::json;
 
@@ -107,6 +111,8 @@ DECL_EXPORT bool IsInitialized();
 DECL_EXPORT void ParseJson(const char* jsonPath);
 
 DECL_EXPORT const char* GetRSZClassName(uint32_t classHash);
+
+DECL_EXPORT uint32_t GetRSZClassCRC(uint32_t classHash);
 
 DECL_EXPORT uint32_t GetFieldCount(uint32_t classHash);
 

@@ -1,5 +1,4 @@
 #include "RSZStructConstructor.hpp"
-#include <windows.h>
 #include <cstdlib>
 #include <regex>
 
@@ -325,9 +324,26 @@ DECL_EXPORT const char* GetRSZClassName(uint32_t classHash)
 	return "Unknown error!";
 }
 
+DECL_EXPORT uint32_t GetRSZClassCRC(uint32_t classHash)
+{
+	if (!isInitialized)
+		return 0;
+
+	auto hashKey = (std::stringstream{} << std::hex << classHash).str();
+
+	if (rszInfo.contains(hashKey)) {
+		auto crcStr = rszInfo[hashKey]["crc"].get<std::string>();
+		uint32_t crc;
+		std::stringstream{} << crcStr >> std::hex >> crc;
+		return crc;
+	}
+
+    return 0;
+}
+
 DECL_EXPORT uint32_t GetFieldCount(uint32_t classHash)
 {
-	if (!isInitialized) 
+	if (!isInitialized)
 		return -1;
 
 	auto classKey = (std::stringstream{} << std::hex << classHash).str();
